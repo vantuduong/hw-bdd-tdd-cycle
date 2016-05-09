@@ -7,7 +7,7 @@
   Include: 
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", 1, @selected_ratings.include?(rating), :id => "ratings_#{rating}"
+    = check_box_tag "ratings[#{rating}]", 1, @selected_ratings.include?(rating)
   = submit_tag 'Refresh', :id => 'ratings_submit'
 
 %table#movies
@@ -16,6 +16,10 @@
       %th{:class => @title_header}= link_to 'Movie Title', movies_path(:sort => 'title', :ratings => @selected_ratings), :id => 'title_header'
       %th Rating
       %th{:class => @date_header}= link_to 'Release Date', movies_path(:sort => 'release_date', :ratings => @selected_ratings), :id => 'release_date_header'
+<<<<<<< HEAD
+      %th Director
+=======
+>>>>>>> 7db652a42842fd59df51be73c896aa0bd1feb5d7
       %th More Info
   %tbody
     - @movies.each do |movie|
@@ -23,6 +27,10 @@
         %td= movie.title 
         %td= movie.rating
         %td= movie.release_date
+<<<<<<< HEAD
+        %td= movie.director
+=======
+>>>>>>> 7db652a42842fd59df51be73c896aa0bd1feb5d7
         %td= link_to "More about #{movie.title}", movie_path(movie)
 
 = link_to 'Add new movie', new_movie_path

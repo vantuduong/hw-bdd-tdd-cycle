@@ -1,5 +1,6 @@
 -# in app/views/movies/show.html.haml
 
+
 %h2 Details about #{@movie.title}
 
 %ul#details
@@ -9,6 +10,12 @@
   %li
     Released on:
     = @movie.release_date.strftime("%B %d, %Y")
+<<<<<<< HEAD
+  %li
+    Director:
+    = @movie.director
+=======
+>>>>>>> 7db652a42842fd59df51be73c896aa0bd1feb5d7
 
 %h3 Description:
 
@@ -16,4 +23,8 @@
 
 = link_to 'Edit', edit_movie_path(@movie)
 = button_to 'Delete', movie_path(@movie), :method => :delete, :confirm => 'Are you sure?'
+<<<<<<< HEAD
+= link_to 'Find Movies With Same Director', movie_similar_path(@id)
+=======
+>>>>>>> 7db652a42842fd59df51be73c896aa0bd1feb5d7
 = link_to 'Back to movie list', movies_path

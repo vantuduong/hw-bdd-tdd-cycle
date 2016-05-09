@@ -1,12 +1,14 @@
 class MoviesController < ApplicationController
   
-  def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
-  end
-
-  def show
+   def show
+<<<<<<< HEAD
+    @id = params[:id] # retrieve movie ID from URI route
+    @movie = Movie.find(@id) # look up movie by unique ID
+    @director = @movie.director
+=======
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
+>>>>>>> 7db652a42842fd59df51be73c896aa0bd1feb5d7
     # will render app/views/movies/show.<extension> by default
   end
 
@@ -14,23 +16,24 @@ class MoviesController < ApplicationController
     sort = params[:sort] || session[:sort]
     case sort
     when 'title'
-      ordering,@title_header = {:title => :asc}, 'hilite'
+      ordering,@title_header = {:order => :title}, 'hilite'
     when 'release_date'
-      ordering,@date_header = {:release_date => :asc}, 'hilite'
+      ordering,@date_header = {:order => :release_date}, 'hilite'
     end
     @all_ratings = Movie.all_ratings
     @selected_ratings = params[:ratings] || session[:ratings] || {}
-    
-    if @selected_ratings == {}
-      @selected_ratings = Hash[@all_ratings.map {|rating| [rating, rating]}]
+
+    if params[:sort] != session[:sort]
+      session[:sort] = sort
+      redirect_to :sort => sort, :ratings => @selected_ratings and return
     end
-    
-    if params[:sort] != session[:sort] or params[:ratings] != session[:ratings]
+
+    if params[:ratings] != session[:ratings] and @selected_ratings != {}
       session[:sort] = sort
       session[:ratings] = @selected_ratings
       redirect_to :sort => sort, :ratings => @selected_ratings and return
     end
-    @movies = Movie.where(rating: @selected_ratings.keys).order(ordering)
+    @movies = Movie.find_all_by_rating(@selected_ratings.keys, ordering)
   end
 
   def new
@@ -38,7 +41,7 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.create!(movie_params)
+    @movie = Movie.create!(params[:movie])
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to movies_path
   end
@@ -49,7 +52,7 @@ class MoviesController < ApplicationController
 
   def update
     @movie = Movie.find params[:id]
-    @movie.update_attributes!(movie_params)
+    @movie.update_attributes!(params[:movie])
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
@@ -60,5 +63,20 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+<<<<<<< HEAD
+  
+  def similar
+    @id = params[:movie_id]
+    @movie = Movie.find(@id)
+    @director = @movie.director
+    if not @director.blank?
+      @movies = Movie.similar_directors(@director)
+    else
+      flash[:notice] = "'#{@movie.title}' has no director info"
+      redirect_to movies_path
+    end
+  end
+=======
+>>>>>>> 7db652a42842fd59df51be73c896aa0bd1feb5d7
 
 end
